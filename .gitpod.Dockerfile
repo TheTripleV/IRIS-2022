@@ -1,6 +1,9 @@
 # docker base image with 20.04
 FROM gitpod/workspace-full-vnc
 
+# Non-interactive installation mode
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install ROS2
 RUN sudo apt update && sudo apt install -y locales
 RUN sudo locale-gen en_US en_US.UTF-8
