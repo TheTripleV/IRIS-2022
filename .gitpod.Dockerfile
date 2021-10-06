@@ -2,7 +2,8 @@
 FROM gitpod/workspace-full-vnc
 
 # Non-interactive installation mode
-ENV DEBIAN_FRONTEND=noninteractive
+# ENV DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 # Install ROS2
 RUN sudo apt update && sudo apt install -y locales
@@ -20,7 +21,7 @@ RUN sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.ke
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 RUN sudo apt update
-RUN DEBIAN_FRONTEND=noninteractive sudo apt install -y ros-galactic-desktop
+RUN echo "31\n" | DEBIAN_FRONTEND=noninteractive sudo apt install -y ros-galactic-desktop
 
 RUN source /opt/ros/galactic/setup.bash
 
