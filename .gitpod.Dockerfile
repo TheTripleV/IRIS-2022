@@ -1,6 +1,8 @@
 # docker base image with 20.04
 FROM gitpod/workspace-full-vnc
 
+SHELL ["/bin/bash", "-c"]
+
 # Non-interactive installation mode
 # ENV DEBIAN_FRONTEND=noninteractive
 ARG DEBIAN_FRONTEND=noninteractive
@@ -20,8 +22,15 @@ RUN sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.ke
 
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
+# RUN localectl set-keymap us
+# RUN localectl set-x11-keymap us
+# COPY ./keyboard /etc/default/keyboard
+# RUN sudo touch /etc/default/keyboard
+# RUN echo -e "XKBMODEL=\"pc104\"\nXKBLAYOUT=\"us\"\nXKBOPTIONS=\"\"\nBACKSPACE=\"guess\"" | sudo tee /etc/default/keyboard
+RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive sudo apt-get install -y -q console-setup keyboard-configuration
 RUN sudo apt update
-RUN echo 31 | DEBIAN_FRONTEND=noninteractive sudo apt install -y ros-galactic-desktop
+RUN sudo apt install -y ros-galactic-desktop
 
 RUN source /opt/ros/galactic/setup.bash
 
